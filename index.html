@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoGP Live Hub | Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #09090b;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --accent-red: #E10600;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --font-main: 'Inter', sans-serif;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background-color: var(--bg-main); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+
+        /* Navbar */
+        .navbar { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-glass); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 5%; max-width: 1400px; margin: 0 auto; }
+        .logo h1 { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px; }
+        .logo span { color: var(--accent-red); }
+        .search-bar { position: relative; width: 300px; }
+        .search-bar i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
+        .search-bar input { width: 100%; background: var(--bg-card); border: 1px solid var(--border-glass); padding: 0.6rem 1rem 0.6rem 2.5rem; border-radius: 8px; color: var(--text-primary); transition: var(--transition); }
+        .search-bar input:focus { outline: none; border-color: var(--accent-red); background: rgba(255, 255, 255, 0.05); }
+
+        /* Tabs */
+        .nav-tabs { display: flex; justify-content: center; gap: 2rem; padding: 0 5%; border-top: 1px solid var(--border-glass); overflow-x: auto; }
+        .tab-btn { background: none; border: none; color: var(--text-secondary); padding: 1rem 0; cursor: pointer; font-weight: 600; position: relative; transition: var(--transition); white-space: nowrap; }
+        .tab-btn:hover, .tab-btn.active { color: var(--text-primary); }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--accent-red); border-radius: 3px 3px 0 0; }
+
+        /* Layout & Tables */
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 5%; min-height: 70vh; }
+        .glass-panel { background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.5rem; overflow-x: auto; animation: fadeIn 0.4s ease-out; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { text-transform: uppercase; font-size: 0.75rem; color: var(--text-secondary); padding: 1rem; border-bottom: 1px solid var(--border-glass); letter-spacing: 1px; }
+        td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        .pos-cell { font-weight: 800; color: var(--text-secondary); }
+        .pos-1 { color: #ffd700; } .pos-2 { color: #c0c0c0; } .pos-3 { color: #cd7f32; }
+
+        /* Badges & Skeleton & Toast */
+        .badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .badge.live { background: rgba(225, 6, 0, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+        .badge.upcoming { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+        .badge.finished { background: rgba(161, 161, 170, 0.2); color: var(--text-secondary); }
+        .skeleton { background: linear-gradient(90deg, var(--bg-card) 25%, rgba(255,255,255,0.05) 50%, var(--bg-card) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; height: 20px; width: 100%; }
+        .error-toast { position: fixed; bottom: 2rem; right: 2rem; background: #270000; border: 1px solid var(--accent-red); color: #ffb4b4; padding: 1rem 1.5rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; z-index: 1000; transition: var(--transition); }
+        .error-toast.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+        .footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border-glass); color: var(--text-secondary); font-size: 0.875rem; margin-top: 3rem; }
+
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .nav-container { flex-direction: column; gap: 1rem; } .search-bar { width: 100%; } .nav-tabs { justify-content: flex-start; padding-bottom: 5px; } }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo"><h1>MOTO<span>GP</span> HUB</h1></div>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search rider or team...">
+            </div>
+        </div>
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-target="dashboard">Dashboard</button>
+            <button class="tab-btn" data-target="rider-standings">Rider Standings</button>
+            <button class="tab-btn" data-target="team-standings">Team Standings</button>
+            <button class="tab-btn" data-target="race-results">Race Results</button>
+            <button class="tab-btn" data-target="race-calendar">Calendar</button>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div id="errorToast" class="error-toast hidden">
+            <i class="fas fa-exclamation-circle"></i><span id="errorMessage">Failed to fetch data.</span>
+        </div>
+        <div id="contentArea" class="content-area"></div>
+    </main>
+
+    <footer class="footer"><p>&copy; 2026 MotoGP Live Hub.</p></footer>
+
+    <script>
+        class MotoGPApp {
+            constructor() {
+                // MENGGUNAKAN RELATIVE PATH VERCEL, BUKAN URL ASLI
+                this.apiBaseUrl = '/api/motogp'; 
+                
+                this.currentView = 'dashboard';
+                this.contentArea = document.getElementById('contentArea');
+                this.tabs = document.querySelectorAll('.tab-btn');
+                this.searchInput = document.getElementById('searchInput');
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.loadView(this.currentView);
+            }
+
+            bindEvents() {
+                this.tabs.forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        this.tabs.forEach(t => t.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.currentView = e.target.dataset.target;
+                        this.loadView(this.currentView);
+                    });
+                });
+
+                let debounceTimer;
+                this.searchInput.addEventListener('input', (e) => {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(() => this.handleSearch(e.target.value), 500);
+                });
+            }
+
+            renderSkeletonTable(columns, rows = 5) {
+                let headers = columns.map(col => `<th>${col}</th>`).join('');
+                let skeletonRows = Array(rows).fill(0).map(() => `<tr>${columns.map(() => `<td><div class="skeleton"></div></td>`).join('')}</tr>`).join('');
+                return `<div class="glass-panel"><table><thead><tr>${headers}</tr></thead><tbody>${skeletonRows}</tbody></table></div>`;
+            }
+
+            async fetchData(endpoint) {
+                try {
+                    const response = await fetch(`${this.apiBaseUrl}/${endpoint}`);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return await response.json();
+                } catch (error) {
+                    console.error("API Fetch Error:", error);
+                    document.getElementById('errorMessage').textContent = "Connection to Vercel API Proxy failed.";
+                    document.getElementById('errorToast').classList.remove('hidden');
+                    setTimeout(() => document.getElementById('errorToast').classList.add('hidden'), 5000);
+                    return null;
+                }
+            }
+
+            async loadView(view) {
+                switch(view) {
+                    case 'rider-standings': this.contentArea.innerHTML = this.renderSkeletonTable(['POS', 'RIDER', 'TEAM', 'NATION', 'PTS']); await this.renderRiderStandings(); break;
+                    case 'team-standings': this.contentArea.innerHTML = this.renderSkeletonTable(['POS', 'TEAM', 'PTS']); await this.renderTeamStandings(); break;
+                    case 'race-results': this.contentArea.innerHTML = this.renderSkeletonTable(['POS', 'RIDER', 'TEAM', 'TIME', 'GAP']); await this.renderRaceResults(); break;
+                    case 'race-calendar': this.contentArea.innerHTML = this.renderSkeletonTable(['GRAND PRIX', 'LOCATION', 'DATE', 'STATUS']); await this.renderRaceCalendar(); break;
+                    default: this.contentArea.innerHTML = this.renderSkeletonTable(['DASHBOARD LOADING...']); await this.renderDashboard(); break;
+                }
+            }
+
+            async renderRiderStandings() {
+                const data = await this.fetchData('standings/riders');
+                if (!data) return;
+                let rows = data.map((rider, index) => `<tr><td class="pos-cell pos-${index + 1}">${index + 1}</td><td style="font-weight: 600;">${rider.name}</td><td style="color: var(--text-secondary);">${rider.team}</td><td>${rider.nation}</td><td style="color: var(--accent-red); font-weight: 800;">${rider.points}</td></tr>`).join('');
+                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Pos</th><th>Rider</th><th>Team</th><th>Nation</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+            }
+
+            async renderTeamStandings() {
+                const data = await this.fetchData('standings/teams');
+                if (!data) return;
+                let rows = data.map((team, index) => `<tr><td class="pos-cell pos-${index + 1}">${index + 1}</td><td style="font-weight: 600;">${team.name}</td><td style="color: var(--accent-red); font-weight: 800;">${team.points}</td></tr>`).join('');
+                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Pos</th><th>Team</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+            }
+
+            async renderRaceResults() {
+                const data = await this.fetchData('results/latest');
+                if (!data) return;
+                let rows = data.map(result => `<tr><td class="pos-cell">${result.position}</td><td style="font-weight: 600;">${result.rider_name}</td><td style="color: var(--text-secondary);">${result.team}</td><td>${result.time}</td><td style="color: var(--text-secondary);">${result.gap || '-'}</td></tr>`).join('');
+                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Pos</th><th>Rider</th><th>Team</th><th>Time</th><th>Gap</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+            }
+
+            async renderRaceCalendar() {
+                const data = await this.fetchData('calendar');
+                if (!data) return;
+                let rows = data.map(race => `<tr><td style="font-weight: 600;">${race.grand_prix}</td><td style="color: var(--text-secondary);">${race.location}</td><td>${new Date(race.date).toLocaleDateString('en-GB')}</td><td><span class="badge ${race.status.toLowerCase()}">${race.status.toUpperCase()}</span></td></tr>`).join('');
+                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Grand Prix</th><th>Location</th><th>Date</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+            }
+
+            async renderDashboard() {
+                try {
+                    const [riders, races] = await Promise.all([this.fetchData('standings/riders?limit=5'), this.fetchData('calendar?status=upcoming&limit=1')]);
+                    if(!riders || !races) throw new Error("Incomplete");
+                    this.contentArea.innerHTML = `
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                            <div class="glass-panel" style="border-left: 4px solid var(--accent-red);">
+                                <h3 style="color: var(--text-secondary); font-size: 0.875rem;">CHAMPIONSHIP LEADER</h3>
+                                <h2 style="font-size: 2rem; margin: 0.5rem 0;">${riders[0].name}</h2>
+                                <p style="color: var(--accent-red); font-weight: 800; font-size: 1.5rem;">${riders[0].points} PTS</p>
+                                <p style="color: var(--text-secondary);">${riders[0].team}</p>
+                            </div>
+                            <div class="glass-panel">
+                                <h3 style="color: var(--text-secondary); font-size: 0.875rem;">NEXT RACE</h3>
+                                <h2 style="font-size: 1.5rem; margin: 0.5rem 0;">${races[0].grand_prix}</h2>
+                                <p>${races[0].location}</p>
+                            </div>
+                        </div>`;
+                } catch (e) {}
+            }
+
+            handleSearch(query) {
+                if (!query) { this.loadView(this.currentView); return; }
+                const rows = this.contentArea.querySelectorAll('tbody tr');
+                rows.forEach(row => row.style.display = row.textContent.toLowerCase().includes(query.toLowerCase()) ? '' : 'none');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => new MotoGPApp());
+    </script>
+</body>
+</html>
