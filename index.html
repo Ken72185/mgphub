@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MotoGP Live Hub | Premium</title>
+    <title>MotoGP Live Hub | TheSportsDB Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* === UI KELAS DUNIA: QUIET LUXURY & GLASSMORPHISM === */
         :root {
             --bg-main: #09090b;
             --bg-card: rgba(255, 255, 255, 0.03);
@@ -21,44 +22,42 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: var(--font-main); background-color: var(--bg-main); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
 
-        /* Navbar Modern */
+        /* Navbar Sticky Premium */
         .navbar { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-glass); }
         .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 5%; max-width: 1400px; margin: 0 auto; }
         .logo h1 { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px; }
         .logo span { color: var(--accent-red); }
         
-        /* Search Bar */
+        /* Search Bar Modern */
         .search-bar { position: relative; width: 300px; }
         .search-bar i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
         .search-bar input { width: 100%; background: var(--bg-card); border: 1px solid var(--border-glass); padding: 0.6rem 1rem 0.6rem 2.5rem; border-radius: 8px; color: var(--text-primary); transition: var(--transition); }
         .search-bar input:focus { outline: none; border-color: var(--accent-red); background: rgba(255, 255, 255, 0.05); }
 
-        /* Navigation Tabs */
-        .nav-tabs { display: flex; justify-content: center; gap: 2rem; padding: 0 5%; border-top: 1px solid var(--border-glass); overflow-x: auto; }
+        /* Tab Navigation */
+        .nav-tabs { display: flex; justify-content: center; gap: 2rem; padding: 0 5%; border-top: 1px solid var(--border-glass); overflow-x: auto; scrollbar-width: none; }
         .tab-btn { background: none; border: none; color: var(--text-secondary); padding: 1rem 0; cursor: pointer; font-weight: 600; position: relative; transition: var(--transition); white-space: nowrap; }
         .tab-btn:hover, .tab-btn.active { color: var(--text-primary); }
         .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--accent-red); border-radius: 3px 3px 0 0; }
 
-        /* Container & Glass Cards */
+        /* Layout & Cards */
         .container { max-width: 1400px; margin: 2rem auto; padding: 0 5%; min-height: 70vh; }
-        .glass-panel { background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.5rem; overflow-x: auto; animation: fadeIn 0.4s ease-out; }
+        .glass-panel { background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.5rem; overflow-x: auto; animation: fadeIn 0.4s ease-out; margin-bottom: 2rem;}
         
-        /* Tables */
+        /* Data Tables */
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th { text-transform: uppercase; font-size: 0.75rem; color: var(--text-secondary); padding: 1rem; border-bottom: 1px solid var(--border-glass); letter-spacing: 1px; }
         td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
         tr:hover td { background: rgba(255,255,255,0.02); }
-        
         .pos-cell { font-weight: 800; color: var(--text-secondary); }
         .pos-1 { color: #ffd700; } .pos-2 { color: #c0c0c0; } .pos-3 { color: #cd7f32; }
 
-        /* Badges */
+        /* Status Badges */
         .badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-        .badge.live { background: rgba(225, 6, 0, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
-        .badge.upcoming { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
-        .badge.finished { background: rgba(161, 161, 170, 0.2); color: var(--text-secondary); }
-        
-        /* Skeleton & Error Toast */
+        .badge.finished { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+        .badge.upcoming { background: rgba(225, 6, 0, 0.1); color: var(--accent-red); border: 1px solid rgba(225, 6, 0, 0.3); }
+
+        /* Skeleton Loading & Toasts */
         .skeleton { background: linear-gradient(90deg, var(--bg-card) 25%, rgba(255,255,255,0.05) 50%, var(--bg-card) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; height: 20px; width: 100%; }
         .error-toast { position: fixed; bottom: 2rem; right: 2rem; background: #270000; border: 1px solid var(--accent-red); color: #ffb4b4; padding: 1rem 1.5rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; z-index: 1000; transition: var(--transition); }
         .error-toast.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
@@ -66,6 +65,8 @@
 
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Mobile Responsive */
         @media (max-width: 768px) { .nav-container { flex-direction: column; gap: 1rem; } .search-bar { width: 100%; } .nav-tabs { justify-content: flex-start; padding-bottom: 5px; } }
     </style>
 </head>
@@ -75,30 +76,36 @@
             <div class="logo"><h1>MOTO<span>GP</span> HUB</h1></div>
             <div class="search-bar">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search rider or team...">
+                <input type="text" id="searchInput" placeholder="Search rider or race...">
             </div>
         </div>
         <nav class="nav-tabs">
             <button class="tab-btn active" data-target="dashboard">Dashboard</button>
             <button class="tab-btn" data-target="rider-standings">Rider Standings</button>
-            <button class="tab-btn" data-target="team-standings">Team Standings</button>
-            <button class="tab-btn" data-target="race-results">Race Results</button>
+            <button class="tab-btn" data-target="race-results">Recent Races</button>
             <button class="tab-btn" data-target="race-calendar">Calendar</button>
         </nav>
     </header>
 
     <main class="container">
         <div id="errorToast" class="error-toast hidden">
-            <i class="fas fa-exclamation-circle"></i><span id="errorMessage">Failed to fetch data.</span>
+            <i class="fas fa-exclamation-circle"></i><span id="errorMessage">Gagal terhubung ke TheSportsDB.</span>
         </div>
         <div id="contentArea" class="content-area"></div>
     </main>
 
-    <footer class="footer"><p>&copy; 2026 MotoGP Live Hub. Built with Vercel API Proxy.</p></footer>
+    <footer class="footer"><p>&copy; 2026 MotoGP Live Hub. Powered by TheSportsDB.</p></footer>
 
     <script>
         class MotoGPApp {
             constructor() {
+                // Konfigurasi API TheSportsDB (Gratis & Tanpa Key Ribet)
+                // ID MotoGP di TheSportsDB = 4407
+                this.apiBase = 'https://www.thesportsdb.com/api/v1/json/3';
+                this.leagueId = '4407';
+                this.currentYear = new Date().getFullYear();
+
+                // DOM Elements
                 this.currentView = 'dashboard';
                 this.contentArea = document.getElementById('contentArea');
                 this.tabs = document.querySelectorAll('.tab-btn');
@@ -134,87 +141,162 @@
                 return `<div class="glass-panel"><table><thead><tr>${headers}</tr></thead><tbody>${skeletonRows}</tbody></table></div>`;
             }
 
-            // INI BAGIAN PALING PENTING: FETCH KE BACKEND VERCEL LU
-            async fetchData(endpoint) {
+            // Murni manggil API langsung dari browser! Nggak perlu ngelewatin Vercel backend.
+            async fetchAPI(endpoint) {
                 try {
-                    // Minta data ke folder api/motogp.js yang ada di Vercel
-                    const response = await fetch(`/api/motogp?endpoint=${endpoint}`);
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const response = await fetch(`${this.apiBase}/${endpoint}`);
+                    if (!response.ok) throw new Error('API Network Error');
                     return await response.json();
                 } catch (error) {
                     console.error("API Fetch Error:", error);
-                    document.getElementById('errorMessage').textContent = "Serverless API connection failed.";
-                    document.getElementById('errorToast').classList.remove('hidden');
-                    setTimeout(() => document.getElementById('errorToast').classList.add('hidden'), 5000);
+                    const toast = document.getElementById('errorToast');
+                    toast.classList.remove('hidden');
+                    setTimeout(() => toast.classList.add('hidden'), 5000);
                     return null;
                 }
             }
 
             async loadView(view) {
                 switch(view) {
-                    case 'rider-standings': this.contentArea.innerHTML = this.renderSkeletonTable(['POS', 'RIDER', 'TEAM', 'NATION', 'PTS']); await this.renderRiderStandings(); break;
-                    case 'team-standings': this.contentArea.innerHTML = this.renderSkeletonTable(['POS', 'TEAM', 'PTS']); await this.renderTeamStandings(); break;
-                    case 'race-results': this.contentArea.innerHTML = this.renderSkeletonTable(['POS', 'RIDER', 'TEAM', 'TIME', 'GAP']); await this.renderRaceResults(); break;
-                    case 'race-calendar': this.contentArea.innerHTML = this.renderSkeletonTable(['GRAND PRIX', 'LOCATION', 'DATE', 'STATUS']); await this.renderRaceCalendar(); break;
-                    default: this.contentArea.innerHTML = this.renderSkeletonTable(['DASHBOARD LOADING...']); await this.renderDashboard(); break;
+                    case 'rider-standings': 
+                        this.contentArea.innerHTML = this.renderSkeletonTable(['POS', 'RIDER', 'TEAM', 'WINS', 'PTS']); 
+                        await this.renderRiderStandings(); 
+                        break;
+                    case 'race-results': 
+                        this.contentArea.innerHTML = this.renderSkeletonTable(['GRAND PRIX', 'CIRCUIT', 'DATE', 'SEASON']); 
+                        await this.renderRecentRaces(); 
+                        break;
+                    case 'race-calendar': 
+                        this.contentArea.innerHTML = this.renderSkeletonTable(['GRAND PRIX', 'VENUE', 'DATE', 'TIME', 'STATUS']); 
+                        await this.renderRaceCalendar(); 
+                        break;
+                    default: 
+                        this.contentArea.innerHTML = this.renderSkeletonTable(['LOADING DASHBOARD...']); 
+                        await this.renderDashboard(); 
+                        break;
                 }
             }
 
             async renderRiderStandings() {
-                const data = await this.fetchData('standings/riders');
-                if (!data) return;
-                let rows = data.map((rider, index) => `<tr><td class="pos-cell pos-${index + 1}">${index + 1}</td><td style="font-weight: 600;">${rider.name}</td><td style="color: var(--text-secondary);">${rider.team}</td><td>${rider.nation}</td><td style="color: var(--accent-red); font-weight: 800;">${rider.points}</td></tr>`).join('');
-                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Pos</th><th>Rider</th><th>Team</th><th>Nation</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+                // TheSportsDB: Ambil klasemen musim ini
+                const data = await this.fetchAPI(`lookuptable.php?l=${this.leagueId}&s=${this.currentYear}`);
+                if (!data || !data.table) {
+                    this.contentArea.innerHTML = '<div class="glass-panel"><p style="color: var(--text-secondary); text-align: center;">Data klasemen belum tersedia untuk musim ini.</p></div>';
+                    return;
+                }
+
+                let rows = data.table.map(rider => `
+                    <tr>
+                        <td class="pos-cell pos-${rider.intRank}">${rider.intRank}</td>
+                        <td style="font-weight: 600;">${rider.strTeam}</td>
+                        <td style="color: var(--text-secondary);">${rider.strForm || '-'}</td>
+                        <td>${rider.intWin}</td>
+                        <td style="color: var(--accent-red); font-weight: 800;">${rider.intPoints}</td>
+                    </tr>`).join('');
+                
+                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Pos</th><th>Rider</th><th>Detail</th><th>Wins</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table></div>`;
             }
 
-            async renderTeamStandings() {
-                const data = await this.fetchData('standings/teams');
-                if (!data) return;
-                let rows = data.map((team, index) => `<tr><td class="pos-cell pos-${index + 1}">${index + 1}</td><td style="font-weight: 600;">${team.name}</td><td style="color: var(--accent-red); font-weight: 800;">${team.points}</td></tr>`).join('');
-                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Pos</th><th>Team</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-            }
+            async renderRecentRaces() {
+                // TheSportsDB: Ambil 15 balapan terakhir
+                const data = await this.fetchAPI(`eventspastleague.php?id=${this.leagueId}`);
+                if (!data || !data.events) return;
 
-            async renderRaceResults() {
-                const data = await this.fetchData('results/latest');
-                if (!data) return;
-                let rows = data.map(result => `<tr><td class="pos-cell">${result.position}</td><td style="font-weight: 600;">${result.rider_name}</td><td style="color: var(--text-secondary);">${result.team}</td><td>${result.time}</td><td style="color: var(--text-secondary);">${result.gap || '-'}</td></tr>`).join('');
-                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Pos</th><th>Rider</th><th>Team</th><th>Time</th><th>Gap</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+                let rows = data.events.map(race => `
+                    <tr>
+                        <td style="font-weight: 600;">${race.strEvent}</td>
+                        <td style="color: var(--text-secondary);">${race.strVenue || '-'}</td>
+                        <td>${new Date(race.dateEvent).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
+                        <td>${race.strSeason}</td>
+                    </tr>`).join('');
+                
+                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Grand Prix</th><th>Venue</th><th>Date</th><th>Season</th></tr></thead><tbody>${rows}</tbody></table></div>`;
             }
 
             async renderRaceCalendar() {
-                const data = await this.fetchData('calendar');
-                if (!data) return;
-                let rows = data.map(race => `<tr><td style="font-weight: 600;">${race.grand_prix}</td><td style="color: var(--text-secondary);">${race.location}</td><td>${new Date(race.date).toLocaleDateString('en-GB')}</td><td><span class="badge ${race.status.toLowerCase()}">${race.status.toUpperCase()}</span></td></tr>`).join('');
-                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Grand Prix</th><th>Location</th><th>Date</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+                // TheSportsDB: Ambil seluruh kalender event musim ini
+                const data = await this.fetchAPI(`eventsseason.php?id=${this.leagueId}&s=${this.currentYear}`);
+                if (!data || !data.events) return;
+
+                const today = new Date();
+                let rows = data.events.map(race => {
+                    const raceDate = new Date(race.dateEvent);
+                    const isUpcoming = raceDate > today;
+                    const statusClass = isUpcoming ? 'upcoming' : 'finished';
+                    const statusText = isUpcoming ? 'UPCOMING' : 'FINISHED';
+
+                    return `
+                    <tr>
+                        <td style="font-weight: 600;">${race.strEvent}</td>
+                        <td style="color: var(--text-secondary);">${race.strVenue || 'TBA'}</td>
+                        <td>${raceDate.toLocaleDateString('en-GB')}</td>
+                        <td>${race.strTime ? race.strTime.substring(0,5) + ' UTC' : 'TBA'}</td>
+                        <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    </tr>`;
+                }).join('');
+                
+                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Grand Prix</th><th>Venue</th><th>Date</th><th>Time</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
             }
 
             async renderDashboard() {
                 try {
-                    const [riders, races] = await Promise.all([this.fetchData('standings/riders?limit=5'), this.fetchData('calendar?status=upcoming&limit=1')]);
-                    if(!riders || !races) throw new Error("Incomplete");
+                    const [standingsData, calendarData] = await Promise.all([
+                        this.fetchAPI(`lookuptable.php?l=${this.leagueId}&s=${this.currentYear}`),
+                        this.fetchAPI(`eventsseason.php?id=${this.leagueId}&s=${this.currentYear}`)
+                    ]);
+
+                    let leaderContent = '<p>No data</p>';
+                    if (standingsData && standingsData.table && standingsData.table.length > 0) {
+                        const topRider = standingsData.table[0];
+                        leaderContent = `
+                            <h3 style="color: var(--text-secondary); font-size: 0.875rem;">CHAMPIONSHIP LEADER</h3>
+                            <h2 style="font-size: 2rem; margin: 0.5rem 0;">${topRider.strTeam}</h2>
+                            <p style="color: var(--accent-red); font-weight: 800; font-size: 1.5rem;">${topRider.intPoints} PTS</p>
+                            <p style="color: var(--text-secondary);">Wins: ${topRider.intWin}</p>
+                        `;
+                    }
+
+                    let nextRaceContent = '<p>Season finished</p>';
+                    if (calendarData && calendarData.events) {
+                        const today = new Date();
+                        const upcomingRaces = calendarData.events.filter(e => new Date(e.dateEvent) > today);
+                        if (upcomingRaces.length > 0) {
+                            const nextRace = upcomingRaces[0];
+                            nextRaceContent = `
+                                <h3 style="color: var(--text-secondary); font-size: 0.875rem;">NEXT RACE</h3>
+                                <h2 style="font-size: 1.5rem; margin: 0.5rem 0;">${nextRace.strEvent}</h2>
+                                <p style="color: var(--text-secondary);">${nextRace.strVenue || 'TBA'}</p>
+                                <p style="color: var(--accent-red); font-weight: 600; margin-top: 0.5rem;">
+                                    ${new Date(nextRace.dateEvent).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                </p>
+                            `;
+                        }
+                    }
+
                     this.contentArea.innerHTML = `
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
                             <div class="glass-panel" style="border-left: 4px solid var(--accent-red);">
-                                <h3 style="color: var(--text-secondary); font-size: 0.875rem;">CHAMPIONSHIP LEADER</h3>
-                                <h2 style="font-size: 2rem; margin: 0.5rem 0;">${riders[0].name}</h2>
-                                <p style="color: var(--accent-red); font-weight: 800; font-size: 1.5rem;">${riders[0].points} PTS</p>
-                                <p style="color: var(--text-secondary);">${riders[0].team}</p>
+                                ${leaderContent}
                             </div>
                             <div class="glass-panel">
-                                <h3 style="color: var(--text-secondary); font-size: 0.875rem;">NEXT RACE</h3>
-                                <h2 style="font-size: 1.5rem; margin: 0.5rem 0;">${races[0].grand_prix}</h2>
-                                <p>${races[0].location}</p>
+                                ${nextRaceContent}
                             </div>
                         </div>`;
-                } catch (e) {}
+                } catch (e) {
+                    this.contentArea.innerHTML = '<div class="glass-panel"><p>Error loading dashboard.</p></div>';
+                }
             }
 
             handleSearch(query) {
                 if (!query) { this.loadView(this.currentView); return; }
                 const rows = this.contentArea.querySelectorAll('tbody tr');
-                rows.forEach(row => row.style.display = row.textContent.toLowerCase().includes(query.toLowerCase()) ? '' : 'none');
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(query.toLowerCase()) ? '' : 'none';
+                });
             }
         }
+        
         document.addEventListener('DOMContentLoaded', () => new MotoGPApp());
     </script>
 </body>
