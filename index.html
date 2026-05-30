@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Teko:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* === UI KELAS DUNIA: QUIET LUXURY & GLASSMORPHISM === */
         :root {
             --bg-main: #09090b;
             --bg-card: rgba(255, 255, 255, 0.03);
@@ -25,24 +26,31 @@
 
         /* Navbar Modern */
         .navbar { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-glass); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; max-width: 1400px; margin: 0 auto; }
+        .nav-container { display: flex; justify-content: center; align-items: center; padding: 1rem 5%; max-width: 1400px; margin: 0 auto; flex-direction: column; gap: 1rem;}
+        
+        @media (min-width: 768px) {
+            .nav-container { flex-direction: row; justify-content: space-between; }
+        }
+
         .logo h1 { font-family: var(--font-head); font-weight: 700; font-size: 2.5rem; letter-spacing: 1px; margin: 0; line-height: 1; }
         .logo span { color: var(--accent-neon); text-shadow: 0 0 10px rgba(0,255,128,0.4); }
 
         /* Nav Tabs */
-        .nav-tabs { display: flex; justify-content: center; gap: 3rem; padding: 0 5%; border-top: 1px solid rgba(255,255,255,0.05); overflow-x: auto; }
-        .tab-btn { background: none; border: none; color: var(--text-secondary); padding: 1rem 0; cursor: pointer; font-weight: 600; font-family: var(--font-head); font-size: 1.2rem; letter-spacing: 1px; position: relative; transition: var(--transition); }
+        .nav-tabs { display: flex; justify-content: center; gap: 2rem; padding: 0 5%; border-top: 1px solid rgba(255,255,255,0.05); overflow-x: auto; scrollbar-width: none; }
+        .tab-btn { background: none; border: none; color: var(--text-secondary); padding: 1rem 0; cursor: pointer; font-weight: 600; font-family: var(--font-head); font-size: 1.2rem; letter-spacing: 1px; position: relative; transition: var(--transition); white-space: nowrap; }
         .tab-btn:hover, .tab-btn.active { color: var(--accent-neon); }
         .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--accent-neon); box-shadow: 0 -2px 10px rgba(0,255,128,0.5); }
 
         .container { max-width: 1400px; margin: 2rem auto; padding: 0 5%; min-height: 70vh; }
         
         /* Match Cards */
-        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; }
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
         .match-card { background: var(--bg-card); backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.5rem; transition: var(--transition); position: relative; overflow: hidden; }
         .match-card:hover { border-color: var(--accent-neon); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,255,128,0.1); }
         
-        .league-name { font-size: 0.75rem; color: var(--accent-neon); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 1rem; }
+        .league-name { font-size: 0.75rem; color: var(--accent-neon); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;}
+        .league-name img { width: 20px; height: 20px; object-fit: contain; }
+        
         .teams-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .team { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 40%; }
         .team img { width: 50px; height: 50px; object-fit: contain; }
@@ -54,17 +62,24 @@
         .badge.upcoming { background: rgba(0, 255, 128, 0.1); color: var(--accent-neon); padding: 0.2rem 0.8rem; border-radius: 20px; font-weight: bold; }
 
         /* BRACKET SYSTEM CSS */
-        .bracket-container { display: flex; gap: 2rem; overflow-x: auto; padding: 2rem 0; align-items: center; justify-content: center; }
+        .bracket-container { display: flex; gap: 2rem; overflow-x: auto; padding: 2rem 0; align-items: center; justify-content: center; scrollbar-width: none; }
         .bracket-round { display: flex; flex-direction: column; justify-content: space-around; gap: 2rem; }
-        .bracket-match { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 8px; width: 200px; padding: 0.5rem; position: relative; }
+        .bracket-match { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 8px; width: 220px; padding: 0.8rem; position: relative; }
         .bracket-match::after { content: ''; position: absolute; right: -2rem; top: 50%; width: 2rem; height: 2px; background: var(--border-glass); }
-        .bracket-round:last-child .bracket-match::after { display: none; } /* Hilangkan garis di final */
-        .b-team { display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; }
+        .bracket-round:last-child .bracket-match::after { display: none; }
+        .b-team { display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; font-weight: 600;}
         .b-team:last-child { border-bottom: none; }
         .b-score { font-weight: 800; color: var(--accent-neon); }
-        .b-winner { color: var(--accent-neon); }
+        .b-winner { color: var(--text-primary); }
+        .b-loser { color: var(--text-secondary); }
 
-        .skeleton { background: linear-gradient(90deg, var(--bg-card) 25%, rgba(0,255,128,0.05) 50%, var(--bg-card) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; height: 150px; width: 100%; }
+        .skeleton { background: linear-gradient(90deg, var(--bg-card) 25%, rgba(0,255,128,0.05) 50%, var(--bg-card) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; height: 180px; width: 100%; }
+
+        /* Error Toast */
+        .error-toast { position: fixed; bottom: 2rem; right: 2rem; background: #270000; border: 1px solid var(--accent-val); color: #ffb4b4; padding: 1rem 1.5rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; z-index: 1000; transition: var(--transition); }
+        .error-toast.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+
+        .footer { text-align: center; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-secondary); font-size: 0.875rem; margin-top: 3rem; }
 
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 70, 85, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 70, 85, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 70, 85, 0); } }
@@ -83,18 +98,27 @@
     </header>
 
     <main class="container">
+        <div id="errorToast" class="error-toast hidden">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorMessage">Failed to fetch data from API.</span>
+        </div>
         <div id="contentArea"></div>
     </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 VCT Tracker. Powered by HenrikDev API.</p>
+    </footer>
 
     <script>
         class ValorantHub {
             constructor() {
-                // HenrikDev API: Sangat stabil, auto-update, no auth required
+                // HenrikDev API (Real-time, No Auth Required)
                 this.apiBase = 'https://api.henrikdev.xyz/valorant/v1';
                 
                 this.currentView = 'schedule';
                 this.contentArea = document.getElementById('contentArea');
                 this.tabs = document.querySelectorAll('.tab-btn');
+                this.errorToast = document.getElementById('errorToast');
                 
                 this.init();
             }
@@ -115,21 +139,31 @@
                 });
             }
 
+            showError(msg) {
+                document.getElementById('errorMessage').textContent = msg;
+                this.errorToast.classList.remove('hidden');
+                setTimeout(() => this.errorToast.classList.add('hidden'), 5000);
+            }
+
             async fetchAPI(endpoint) {
                 try {
                     const response = await fetch(`${this.apiBase}/${endpoint}`);
-                    if (!response.ok) throw new Error('API Error');
+                    if (!response.ok) throw new Error(`API Error: ${response.status}`);
                     const json = await response.json();
                     return json.data;
                 } catch (error) {
-                    console.error(error);
+                    console.error("Fetch Error:", error);
+                    this.showError("Network connection failed.");
                     return null;
                 }
             }
 
             async loadView(view) {
-                this.contentArea.innerHTML = `<div class="match-grid">${Array(6).fill('<div class="skeleton"></div>').join('')}</div>`;
-                
+                // Tampilkan Skeleton UI sebelum data masuk
+                if (view !== 'bracket') {
+                    this.contentArea.innerHTML = `<div class="match-grid">${Array(6).fill('<div class="skeleton"></div>').join('')}</div>`;
+                }
+
                 switch(view) {
                     case 'schedule': await this.renderSchedule(); break;
                     case 'tournaments': await this.renderTournaments(); break;
@@ -138,30 +172,33 @@
             }
 
             async renderSchedule() {
-                // Narik data match resmi VCT
                 const matches = await this.fetchAPI('esports/schedule');
                 
                 if (!matches || matches.length === 0) {
-                    this.contentArea.innerHTML = `<p style="text-align:center; color: var(--text-secondary);">No upcoming matches found in the API.</p>`;
+                    this.contentArea.innerHTML = `<div class="match-card" style="text-align:center;"><p style="color: var(--text-secondary);">No upcoming matches found in the API.</p></div>`;
                     return;
                 }
 
-                // Filter out matches without team data
-                const validMatches = matches.filter(m => m.match.teams && m.match.teams.length === 2).slice(0, 12);
+                // Filter hanya match yang memiliki 2 tim lengkap
+                const validMatches = matches.filter(m => m.match.teams && m.match.teams.length === 2).slice(0, 15);
 
                 const html = validMatches.map(m => {
                     const team1 = m.match.teams[0];
                     const team2 = m.match.teams[1];
                     const matchDate = new Date(m.date);
                     
-                    // Logic penentuan status (Live/Upcoming)
                     const isLive = m.state === 'inProgress';
                     const badgeClass = isLive ? 'live' : 'upcoming';
                     const badgeText = isLive ? 'LIVE NOW' : matchDate.toLocaleDateString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
 
+                    const leagueIcon = m.league.icon || 'https://via.placeholder.com/20/09090b/00ff80?text=V';
+
                     return `
                         <div class="match-card">
-                            <div class="league-name"><i class="fas fa-trophy"></i> ${m.league.name}</div>
+                            <div class="league-name">
+                                <img src="${leagueIcon}" alt="League">
+                                ${m.league.name}
+                            </div>
                             <div class="teams-container">
                                 <div class="team">
                                     <img src="${team1.icon || 'https://via.placeholder.com/50/09090b/00ff80?text=T1'}" alt="${team1.name}">
@@ -181,37 +218,97 @@
                     `;
                 }).join('');
 
-                this.contentArea.innerHTML = `<div class="match-grid">${html}</div>`;
+                this.contentArea.innerHTML = `
+                    <h2 style="font-family: var(--font-head); font-size: 2rem; margin-bottom: 1.5rem; letter-spacing: 1px;">UPCOMING <span style="color: var(--accent-neon);">MATCHES</span></h2>
+                    <div class="match-grid">${html}</div>
+                `;
             }
 
             async renderTournaments() {
-                this.contentArea.innerHTML = `<div class="match-card" style="text-align:center; border-color: var(--accent-val);">
-                    <h2 style="font-family: var(--font-head); font-size: 2rem; color: var(--text-primary);">VCT 2026 SEASON OFFICIALLY ONGOING</h2>
-                    <p style="color: var(--text-secondary);">Check Liquipedia for full tier 2/3 circuit details. API focuses on Tier 1 VCT franchised leagues.</p>
-                </div>`;
+                const matches = await this.fetchAPI('esports/schedule');
+                
+                if (!matches || matches.length === 0) {
+                    this.contentArea.innerHTML = `<div class="match-card" style="text-align:center;"><p style="color: var(--text-secondary);">No active tournaments found.</p></div>`;
+                    return;
+                }
+
+                // Ekstrak turnamen unik dari data schedule
+                const activeTournaments = {};
+                matches.forEach(m => {
+                    const leagueName = m.league.name;
+                    if (!activeTournaments[leagueName]) {
+                        activeTournaments[leagueName] = {
+                            name: leagueName,
+                            icon: m.league.icon || 'https://via.placeholder.com/60/09090b/00ff80?text=VCT',
+                            matchCount: 1,
+                            region: m.league.region
+                        };
+                    } else {
+                        activeTournaments[leagueName].matchCount++;
+                    }
+                });
+
+                const html = Object.values(activeTournaments).map(tourney => `
+                    <div class="match-card" style="display: flex; align-items: center; gap: 1.5rem;">
+                        <img src="${tourney.icon}" alt="${tourney.name}" style="width: 60px; height: 60px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,255,128,0.3));">
+                        <div>
+                            <h3 style="font-family: var(--font-head); font-size: 1.5rem; letter-spacing: 1px; color: var(--text-primary); margin: 0; line-height: 1.2;">
+                                ${tourney.name}
+                            </h3>
+                            <p style="color: var(--accent-neon); font-size: 0.85rem; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase;">
+                                ${tourney.region} REGION
+                            </p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.3rem;">
+                                <i class="fas fa-gamepad" style="margin-right: 5px;"></i> ${tourney.matchCount} Upcoming Matches
+                            </p>
+                        </div>
+                    </div>
+                `).join('');
+
+                this.contentArea.innerHTML = `
+                    <h2 style="font-family: var(--font-head); font-size: 2rem; margin-bottom: 1.5rem; letter-spacing: 1px;">ONGOING <span style="color: var(--accent-neon);">EVENTS</span></h2>
+                    <div class="match-grid">${html}</div>
+                `;
             }
 
             renderDemoBracket() {
-                // Fitur Bracket murni CSS Flexbox, ini cara world-class dev bikin visualisasi tree
+                // Layout Master London 2026 Bracket
                 this.contentArea.innerHTML = `
-                    <h2 style="font-family: var(--font-head); font-size: 2rem; text-align: center; margin-bottom: 2rem; letter-spacing: 1px;">MASTERS <span style="color: var(--accent-neon);">PLAYOFFS</span></h2>
+                    <h2 style="font-family: var(--font-head); font-size: 2.2rem; text-align: center; margin-bottom: 0.5rem; letter-spacing: 1px;">
+                        VCT MASTERS <span style="color: var(--accent-neon);">LONDON 2026</span>
+                    </h2>
+                    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2.5rem; font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;">PLAYOFF STAGE</p>
+                    
                     <div class="bracket-container">
+                        <!-- SEMI FINALS -->
                         <div class="bracket-round">
                             <div class="bracket-match">
-                                <div class="b-team"><span class="b-winner">PRX</span> <span class="b-score">2</span></div>
-                                <div class="b-team"><span>SEN</span> <span class="b-score">1</span></div>
+                                <div style="font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 8px; letter-spacing: 1px;">UPPER SEMIFINAL 1</div>
+                                <div class="b-team"><span class="b-winner">TBD</span> <span class="b-score">-</span></div>
+                                <div class="b-team"><span class="b-loser">TBD</span> <span class="b-score">-</span></div>
                             </div>
                             <div class="bracket-match">
-                                <div class="b-team"><span class="b-winner">FNC</span> <span class="b-score">2</span></div>
-                                <div class="b-team"><span>GEN.G</span> <span class="b-score">0</span></div>
+                                <div style="font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 8px; letter-spacing: 1px;">UPPER SEMIFINAL 2</div>
+                                <div class="b-team"><span class="b-winner">TBD</span> <span class="b-score">-</span></div>
+                                <div class="b-team"><span class="b-loser">TBD</span> <span class="b-score">-</span></div>
                             </div>
                         </div>
                         
+                        <!-- UPPER FINAL -->
                         <div class="bracket-round">
-                            <div class="bracket-match" style="border-color: var(--accent-neon); box-shadow: 0 0 15px rgba(0,255,128,0.2);">
-                                <div style="font-size: 0.7rem; color: var(--accent-neon); text-align: center; margin-bottom: 5px; font-weight: bold;">GRAND FINAL</div>
-                                <div class="b-team"><span class="b-winner">PRX</span> <span class="b-score">3</span></div>
-                                <div class="b-team"><span>FNC</span> <span class="b-score">2</span></div>
+                            <div class="bracket-match" style="border-color: var(--border-glass);">
+                                <div style="font-size: 0.65rem; color: var(--accent-neon); margin-bottom: 8px; font-weight: bold; letter-spacing: 1px;">UPPER FINAL</div>
+                                <div class="b-team"><span class="b-winner">TBD</span> <span class="b-score">-</span></div>
+                                <div class="b-team"><span class="b-loser">TBD</span> <span class="b-score">-</span></div>
+                            </div>
+                        </div>
+
+                        <!-- GRAND FINALS -->
+                        <div class="bracket-round">
+                            <div class="bracket-match" style="border-color: var(--accent-neon); box-shadow: 0 0 20px rgba(0,255,128,0.15); transform: scale(1.05);">
+                                <div style="font-size: 0.75rem; color: var(--accent-neon); text-align: center; margin-bottom: 8px; font-weight: bold; letter-spacing: 2px;">GRAND FINAL</div>
+                                <div class="b-team"><span class="b-winner">TBD</span> <span class="b-score">-</span></div>
+                                <div class="b-team"><span class="b-loser">TBD</span> <span class="b-score">-</span></div>
                             </div>
                         </div>
                     </div>
