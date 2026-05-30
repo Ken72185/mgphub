@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/motogp/:path*",
+      "destination": "https://api.sportdb.dev/v1/motogp/:path*"
+    }
+  ]
+}
