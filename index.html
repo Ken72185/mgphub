@@ -21,37 +21,44 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: var(--font-main); background-color: var(--bg-main); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
 
-        /* Navbar */
+        /* Navbar Modern */
         .navbar { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-glass); }
         .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 5%; max-width: 1400px; margin: 0 auto; }
         .logo h1 { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px; }
         .logo span { color: var(--accent-red); }
+        
+        /* Search Bar */
         .search-bar { position: relative; width: 300px; }
         .search-bar i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
         .search-bar input { width: 100%; background: var(--bg-card); border: 1px solid var(--border-glass); padding: 0.6rem 1rem 0.6rem 2.5rem; border-radius: 8px; color: var(--text-primary); transition: var(--transition); }
         .search-bar input:focus { outline: none; border-color: var(--accent-red); background: rgba(255, 255, 255, 0.05); }
 
-        /* Tabs */
+        /* Navigation Tabs */
         .nav-tabs { display: flex; justify-content: center; gap: 2rem; padding: 0 5%; border-top: 1px solid var(--border-glass); overflow-x: auto; }
         .tab-btn { background: none; border: none; color: var(--text-secondary); padding: 1rem 0; cursor: pointer; font-weight: 600; position: relative; transition: var(--transition); white-space: nowrap; }
         .tab-btn:hover, .tab-btn.active { color: var(--text-primary); }
         .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--accent-red); border-radius: 3px 3px 0 0; }
 
-        /* Layout & Tables */
+        /* Container & Glass Cards */
         .container { max-width: 1400px; margin: 2rem auto; padding: 0 5%; min-height: 70vh; }
         .glass-panel { background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.5rem; overflow-x: auto; animation: fadeIn 0.4s ease-out; }
+        
+        /* Tables */
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th { text-transform: uppercase; font-size: 0.75rem; color: var(--text-secondary); padding: 1rem; border-bottom: 1px solid var(--border-glass); letter-spacing: 1px; }
         td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
         tr:hover td { background: rgba(255,255,255,0.02); }
+        
         .pos-cell { font-weight: 800; color: var(--text-secondary); }
         .pos-1 { color: #ffd700; } .pos-2 { color: #c0c0c0; } .pos-3 { color: #cd7f32; }
 
-        /* Badges & Skeleton & Toast */
+        /* Badges */
         .badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
         .badge.live { background: rgba(225, 6, 0, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
         .badge.upcoming { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
         .badge.finished { background: rgba(161, 161, 170, 0.2); color: var(--text-secondary); }
+        
+        /* Skeleton & Error Toast */
         .skeleton { background: linear-gradient(90deg, var(--bg-card) 25%, rgba(255,255,255,0.05) 50%, var(--bg-card) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; height: 20px; width: 100%; }
         .error-toast { position: fixed; bottom: 2rem; right: 2rem; background: #270000; border: 1px solid var(--accent-red); color: #ffb4b4; padding: 1rem 1.5rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; z-index: 1000; transition: var(--transition); }
         .error-toast.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
@@ -87,14 +94,11 @@
         <div id="contentArea" class="content-area"></div>
     </main>
 
-    <footer class="footer"><p>&copy; 2026 MotoGP Live Hub.</p></footer>
+    <footer class="footer"><p>&copy; 2026 MotoGP Live Hub. Built with Vercel API Proxy.</p></footer>
 
     <script>
         class MotoGPApp {
             constructor() {
-                // MENGGUNAKAN RELATIVE PATH VERCEL, BUKAN URL ASLI
-                this.apiBaseUrl = '/api/motogp'; 
-                
                 this.currentView = 'dashboard';
                 this.contentArea = document.getElementById('contentArea');
                 this.tabs = document.querySelectorAll('.tab-btn');
@@ -130,14 +134,16 @@
                 return `<div class="glass-panel"><table><thead><tr>${headers}</tr></thead><tbody>${skeletonRows}</tbody></table></div>`;
             }
 
+            // INI BAGIAN PALING PENTING: FETCH KE BACKEND VERCEL LU
             async fetchData(endpoint) {
                 try {
-                    const response = await fetch(`${this.apiBaseUrl}/${endpoint}`);
+                    // Minta data ke folder api/motogp.js yang ada di Vercel
+                    const response = await fetch(`/api/motogp?endpoint=${endpoint}`);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     return await response.json();
                 } catch (error) {
                     console.error("API Fetch Error:", error);
-                    document.getElementById('errorMessage').textContent = "Connection to Vercel API Proxy failed.";
+                    document.getElementById('errorMessage').textContent = "Serverless API connection failed.";
                     document.getElementById('errorToast').classList.remove('hidden');
                     setTimeout(() => document.getElementById('errorToast').classList.add('hidden'), 5000);
                     return null;
