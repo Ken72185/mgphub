@@ -1,38 +1,32 @@
 export default async function handler(req, res) {
     const { endpoint } = req.query;
 
-    // Ambil URL dan API Key dari Environment Variable Vercel
-    const API_URL = process.env.MOTOGP_API_URL; 
-    const API_KEY = process.env.MOTOGP_API_KEY; 
+    const API_URL = process.env.MOTOGP_API_URL;
+    const API_KEY = process.env.MOTOGP_API_KEY;
 
     if (!endpoint) {
         return res.status(400).json({ error: 'Endpoint diperlukan' });
     }
 
     try {
-        // OPSI A: Jika API Key dimasukkan via HEADERS (Standard Industri)
+        // Eksekusi data ke SportDB menggunakan aturan Header dari Docs
         const response = await fetch(`${API_URL}/${endpoint}`, {
             headers: {
-                'X-API-KEY': API_KEY, // atau 'Authorization': `Bearer ${API_KEY}` sesuai spek SportDB
+                'X-API-Key': API_KEY,
                 'Content-Type': 'application/json'
             }
         });
 
-        // OPSI B: Jika API Key dimasukkan via URL QUERY PARAMETER (Misal: ?key=xxx)
-        // Hapus Opsi A di atas, lalu pakai yang ini:
-        // const separator = endpoint.includes('?') ? '&' : '?';
-        // const response = await fetch(`${API_URL}/${endpoint}${separator}api_key=${API_KEY}`);
-
         if (!response.ok) {
-            throw new Error(`API Error: ${response.status}`);
+            // Nangkep pesan error asli dari SportDB biar gampang di-debug di Vercel Logs
+            const errorText = await response.text();
+            throw new Error(`SportDB Error ${response.status}: ${errorText}`);
         }
 
         const data = await response.json();
-        
-        // Kirim data bersih ke index.html (Tanpa ngebocorin API Key-nya)
         res.status(200).json(data);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Gagal koneksi ke API utama' });
+        console.error("Vercel Backend Error:", error.message);
+        res.status(500).json({ error: 'Gagal ambil data dari SportDB', detail: error.message });
     }
 }
