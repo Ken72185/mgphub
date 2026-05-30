@@ -3,113 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MotoGP Live Hub | TheSportsDB Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>VCT Hub | Premium Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Teko:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* === UI KELAS DUNIA: QUIET LUXURY & GLASSMORPHISM === */
         :root {
             --bg-main: #09090b;
             --bg-card: rgba(255, 255, 255, 0.03);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --accent-red: #E10600;
+            --border-glass: rgba(0, 255, 128, 0.15);
+            --accent-neon: #00ff80; /* Neon Green Premium */
+            --accent-val: #ff4655; /* Valorant Red */
             --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
             --font-main: 'Inter', sans-serif;
+            --font-head: 'Teko', sans-serif;
             --transition: all 0.3s ease;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: var(--font-main); background-color: var(--bg-main); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
 
-        /* Navbar Sticky Premium */
+        /* Navbar Modern */
         .navbar { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-glass); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 5%; max-width: 1400px; margin: 0 auto; }
-        .logo h1 { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px; }
-        .logo span { color: var(--accent-red); }
-        
-        /* Search Bar Modern */
-        .search-bar { position: relative; width: 300px; }
-        .search-bar i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
-        .search-bar input { width: 100%; background: var(--bg-card); border: 1px solid var(--border-glass); padding: 0.6rem 1rem 0.6rem 2.5rem; border-radius: 8px; color: var(--text-primary); transition: var(--transition); }
-        .search-bar input:focus { outline: none; border-color: var(--accent-red); background: rgba(255, 255, 255, 0.05); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; max-width: 1400px; margin: 0 auto; }
+        .logo h1 { font-family: var(--font-head); font-weight: 700; font-size: 2.5rem; letter-spacing: 1px; margin: 0; line-height: 1; }
+        .logo span { color: var(--accent-neon); text-shadow: 0 0 10px rgba(0,255,128,0.4); }
 
-        /* Tab Navigation */
-        .nav-tabs { display: flex; justify-content: center; gap: 2rem; padding: 0 5%; border-top: 1px solid var(--border-glass); overflow-x: auto; scrollbar-width: none; }
-        .tab-btn { background: none; border: none; color: var(--text-secondary); padding: 1rem 0; cursor: pointer; font-weight: 600; position: relative; transition: var(--transition); white-space: nowrap; }
-        .tab-btn:hover, .tab-btn.active { color: var(--text-primary); }
-        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--accent-red); border-radius: 3px 3px 0 0; }
+        /* Nav Tabs */
+        .nav-tabs { display: flex; justify-content: center; gap: 3rem; padding: 0 5%; border-top: 1px solid rgba(255,255,255,0.05); overflow-x: auto; }
+        .tab-btn { background: none; border: none; color: var(--text-secondary); padding: 1rem 0; cursor: pointer; font-weight: 600; font-family: var(--font-head); font-size: 1.2rem; letter-spacing: 1px; position: relative; transition: var(--transition); }
+        .tab-btn:hover, .tab-btn.active { color: var(--accent-neon); }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--accent-neon); box-shadow: 0 -2px 10px rgba(0,255,128,0.5); }
 
-        /* Layout & Cards */
         .container { max-width: 1400px; margin: 2rem auto; padding: 0 5%; min-height: 70vh; }
-        .glass-panel { background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.5rem; overflow-x: auto; animation: fadeIn 0.4s ease-out; margin-bottom: 2rem;}
         
-        /* Data Tables */
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { text-transform: uppercase; font-size: 0.75rem; color: var(--text-secondary); padding: 1rem; border-bottom: 1px solid var(--border-glass); letter-spacing: 1px; }
-        td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
-        tr:hover td { background: rgba(255,255,255,0.02); }
-        .pos-cell { font-weight: 800; color: var(--text-secondary); }
-        .pos-1 { color: #ffd700; } .pos-2 { color: #c0c0c0; } .pos-3 { color: #cd7f32; }
+        /* Match Cards */
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; }
+        .match-card { background: var(--bg-card); backdrop-filter: blur(12px); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.5rem; transition: var(--transition); position: relative; overflow: hidden; }
+        .match-card:hover { border-color: var(--accent-neon); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,255,128,0.1); }
+        
+        .league-name { font-size: 0.75rem; color: var(--accent-neon); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 1rem; }
+        .teams-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .team { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 40%; }
+        .team img { width: 50px; height: 50px; object-fit: contain; }
+        .team-name { font-weight: 600; font-size: 1.1rem; text-align: center; }
+        .vs { font-family: var(--font-head); font-size: 1.5rem; color: var(--text-secondary); }
+        
+        .match-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem; font-size: 0.85rem; }
+        .badge.live { background: rgba(255, 70, 85, 0.2); color: var(--accent-val); border: 1px solid var(--accent-val); padding: 0.2rem 0.8rem; border-radius: 20px; font-weight: bold; animation: pulse 2s infinite; }
+        .badge.upcoming { background: rgba(0, 255, 128, 0.1); color: var(--accent-neon); padding: 0.2rem 0.8rem; border-radius: 20px; font-weight: bold; }
 
-        /* Status Badges */
-        .badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-        .badge.finished { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
-        .badge.upcoming { background: rgba(225, 6, 0, 0.1); color: var(--accent-red); border: 1px solid rgba(225, 6, 0, 0.3); }
+        /* BRACKET SYSTEM CSS */
+        .bracket-container { display: flex; gap: 2rem; overflow-x: auto; padding: 2rem 0; align-items: center; justify-content: center; }
+        .bracket-round { display: flex; flex-direction: column; justify-content: space-around; gap: 2rem; }
+        .bracket-match { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 8px; width: 200px; padding: 0.5rem; position: relative; }
+        .bracket-match::after { content: ''; position: absolute; right: -2rem; top: 50%; width: 2rem; height: 2px; background: var(--border-glass); }
+        .bracket-round:last-child .bracket-match::after { display: none; } /* Hilangkan garis di final */
+        .b-team { display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; }
+        .b-team:last-child { border-bottom: none; }
+        .b-score { font-weight: 800; color: var(--accent-neon); }
+        .b-winner { color: var(--accent-neon); }
 
-        /* Skeleton Loading & Toasts */
-        .skeleton { background: linear-gradient(90deg, var(--bg-card) 25%, rgba(255,255,255,0.05) 50%, var(--bg-card) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; height: 20px; width: 100%; }
-        .error-toast { position: fixed; bottom: 2rem; right: 2rem; background: #270000; border: 1px solid var(--accent-red); color: #ffb4b4; padding: 1rem 1.5rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; z-index: 1000; transition: var(--transition); }
-        .error-toast.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
-        .footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border-glass); color: var(--text-secondary); font-size: 0.875rem; margin-top: 3rem; }
+        .skeleton { background: linear-gradient(90deg, var(--bg-card) 25%, rgba(0,255,128,0.05) 50%, var(--bg-card) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; height: 150px; width: 100%; }
 
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Mobile Responsive */
-        @media (max-width: 768px) { .nav-container { flex-direction: column; gap: 1rem; } .search-bar { width: 100%; } .nav-tabs { justify-content: flex-start; padding-bottom: 5px; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 70, 85, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 70, 85, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 70, 85, 0); } }
     </style>
 </head>
 <body>
     <header class="navbar">
         <div class="nav-container">
-            <div class="logo"><h1>MOTO<span>GP</span> HUB</h1></div>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search rider or race...">
-            </div>
+            <div class="logo"><h1>VCT<span>HUB</span></h1></div>
         </div>
         <nav class="nav-tabs">
-            <button class="tab-btn active" data-target="dashboard">Dashboard</button>
-            <button class="tab-btn" data-target="rider-standings">Rider Standings</button>
-            <button class="tab-btn" data-target="race-results">Recent Races</button>
-            <button class="tab-btn" data-target="race-calendar">Calendar</button>
+            <button class="tab-btn active" data-target="schedule">Schedules</button>
+            <button class="tab-btn" data-target="tournaments">Tournaments</button>
+            <button class="tab-btn" data-target="bracket">Playoff Brackets</button>
         </nav>
     </header>
 
     <main class="container">
-        <div id="errorToast" class="error-toast hidden">
-            <i class="fas fa-exclamation-circle"></i><span id="errorMessage">Gagal terhubung ke TheSportsDB.</span>
-        </div>
-        <div id="contentArea" class="content-area"></div>
+        <div id="contentArea"></div>
     </main>
 
-    <footer class="footer"><p>&copy; 2026 MotoGP Live Hub. Powered by TheSportsDB.</p></footer>
-
     <script>
-        class MotoGPApp {
+        class ValorantHub {
             constructor() {
-                // Konfigurasi API TheSportsDB (Gratis & Tanpa Key Ribet)
-                // ID MotoGP di TheSportsDB = 4407
-                this.apiBase = 'https://www.thesportsdb.com/api/v1/json/3';
-                this.leagueId = '4407';
-                this.currentYear = new Date().getFullYear();
-
-                // DOM Elements
-                this.currentView = 'dashboard';
+                // HenrikDev API: Sangat stabil, auto-update, no auth required
+                this.apiBase = 'https://api.henrikdev.xyz/valorant/v1';
+                
+                this.currentView = 'schedule';
                 this.contentArea = document.getElementById('contentArea');
                 this.tabs = document.querySelectorAll('.tab-btn');
-                this.searchInput = document.getElementById('searchInput');
+                
                 this.init();
             }
 
@@ -127,177 +113,113 @@
                         this.loadView(this.currentView);
                     });
                 });
-
-                let debounceTimer;
-                this.searchInput.addEventListener('input', (e) => {
-                    clearTimeout(debounceTimer);
-                    debounceTimer = setTimeout(() => this.handleSearch(e.target.value), 500);
-                });
             }
 
-            renderSkeletonTable(columns, rows = 5) {
-                let headers = columns.map(col => `<th>${col}</th>`).join('');
-                let skeletonRows = Array(rows).fill(0).map(() => `<tr>${columns.map(() => `<td><div class="skeleton"></div></td>`).join('')}</tr>`).join('');
-                return `<div class="glass-panel"><table><thead><tr>${headers}</tr></thead><tbody>${skeletonRows}</tbody></table></div>`;
-            }
-
-            // Murni manggil API langsung dari browser! Nggak perlu ngelewatin Vercel backend.
             async fetchAPI(endpoint) {
                 try {
                     const response = await fetch(`${this.apiBase}/${endpoint}`);
-                    if (!response.ok) throw new Error('API Network Error');
-                    return await response.json();
+                    if (!response.ok) throw new Error('API Error');
+                    const json = await response.json();
+                    return json.data;
                 } catch (error) {
-                    console.error("API Fetch Error:", error);
-                    const toast = document.getElementById('errorToast');
-                    toast.classList.remove('hidden');
-                    setTimeout(() => toast.classList.add('hidden'), 5000);
+                    console.error(error);
                     return null;
                 }
             }
 
             async loadView(view) {
+                this.contentArea.innerHTML = `<div class="match-grid">${Array(6).fill('<div class="skeleton"></div>').join('')}</div>`;
+                
                 switch(view) {
-                    case 'rider-standings': 
-                        this.contentArea.innerHTML = this.renderSkeletonTable(['POS', 'RIDER', 'TEAM', 'WINS', 'PTS']); 
-                        await this.renderRiderStandings(); 
-                        break;
-                    case 'race-results': 
-                        this.contentArea.innerHTML = this.renderSkeletonTable(['GRAND PRIX', 'CIRCUIT', 'DATE', 'SEASON']); 
-                        await this.renderRecentRaces(); 
-                        break;
-                    case 'race-calendar': 
-                        this.contentArea.innerHTML = this.renderSkeletonTable(['GRAND PRIX', 'VENUE', 'DATE', 'TIME', 'STATUS']); 
-                        await this.renderRaceCalendar(); 
-                        break;
-                    default: 
-                        this.contentArea.innerHTML = this.renderSkeletonTable(['LOADING DASHBOARD...']); 
-                        await this.renderDashboard(); 
-                        break;
+                    case 'schedule': await this.renderSchedule(); break;
+                    case 'tournaments': await this.renderTournaments(); break;
+                    case 'bracket': this.renderDemoBracket(); break;
                 }
             }
 
-            async renderRiderStandings() {
-                // TheSportsDB: Ambil klasemen musim ini
-                const data = await this.fetchAPI(`lookuptable.php?l=${this.leagueId}&s=${this.currentYear}`);
-                if (!data || !data.table) {
-                    this.contentArea.innerHTML = '<div class="glass-panel"><p style="color: var(--text-secondary); text-align: center;">Data klasemen belum tersedia untuk musim ini.</p></div>';
+            async renderSchedule() {
+                // Narik data match resmi VCT
+                const matches = await this.fetchAPI('esports/schedule');
+                
+                if (!matches || matches.length === 0) {
+                    this.contentArea.innerHTML = `<p style="text-align:center; color: var(--text-secondary);">No upcoming matches found in the API.</p>`;
                     return;
                 }
 
-                let rows = data.table.map(rider => `
-                    <tr>
-                        <td class="pos-cell pos-${rider.intRank}">${rider.intRank}</td>
-                        <td style="font-weight: 600;">${rider.strTeam}</td>
-                        <td style="color: var(--text-secondary);">${rider.strForm || '-'}</td>
-                        <td>${rider.intWin}</td>
-                        <td style="color: var(--accent-red); font-weight: 800;">${rider.intPoints}</td>
-                    </tr>`).join('');
-                
-                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Pos</th><th>Rider</th><th>Detail</th><th>Wins</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-            }
+                // Filter out matches without team data
+                const validMatches = matches.filter(m => m.match.teams && m.match.teams.length === 2).slice(0, 12);
 
-            async renderRecentRaces() {
-                // TheSportsDB: Ambil 15 balapan terakhir
-                const data = await this.fetchAPI(`eventspastleague.php?id=${this.leagueId}`);
-                if (!data || !data.events) return;
-
-                let rows = data.events.map(race => `
-                    <tr>
-                        <td style="font-weight: 600;">${race.strEvent}</td>
-                        <td style="color: var(--text-secondary);">${race.strVenue || '-'}</td>
-                        <td>${new Date(race.dateEvent).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
-                        <td>${race.strSeason}</td>
-                    </tr>`).join('');
-                
-                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Grand Prix</th><th>Venue</th><th>Date</th><th>Season</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-            }
-
-            async renderRaceCalendar() {
-                // TheSportsDB: Ambil seluruh kalender event musim ini
-                const data = await this.fetchAPI(`eventsseason.php?id=${this.leagueId}&s=${this.currentYear}`);
-                if (!data || !data.events) return;
-
-                const today = new Date();
-                let rows = data.events.map(race => {
-                    const raceDate = new Date(race.dateEvent);
-                    const isUpcoming = raceDate > today;
-                    const statusClass = isUpcoming ? 'upcoming' : 'finished';
-                    const statusText = isUpcoming ? 'UPCOMING' : 'FINISHED';
+                const html = validMatches.map(m => {
+                    const team1 = m.match.teams[0];
+                    const team2 = m.match.teams[1];
+                    const matchDate = new Date(m.date);
+                    
+                    // Logic penentuan status (Live/Upcoming)
+                    const isLive = m.state === 'inProgress';
+                    const badgeClass = isLive ? 'live' : 'upcoming';
+                    const badgeText = isLive ? 'LIVE NOW' : matchDate.toLocaleDateString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
 
                     return `
-                    <tr>
-                        <td style="font-weight: 600;">${race.strEvent}</td>
-                        <td style="color: var(--text-secondary);">${race.strVenue || 'TBA'}</td>
-                        <td>${raceDate.toLocaleDateString('en-GB')}</td>
-                        <td>${race.strTime ? race.strTime.substring(0,5) + ' UTC' : 'TBA'}</td>
-                        <td><span class="badge ${statusClass}">${statusText}</span></td>
-                    </tr>`;
+                        <div class="match-card">
+                            <div class="league-name"><i class="fas fa-trophy"></i> ${m.league.name}</div>
+                            <div class="teams-container">
+                                <div class="team">
+                                    <img src="${team1.icon || 'https://via.placeholder.com/50/09090b/00ff80?text=T1'}" alt="${team1.name}">
+                                    <div class="team-name">${team1.code || team1.name}</div>
+                                </div>
+                                <div class="vs">VS</div>
+                                <div class="team">
+                                    <img src="${team2.icon || 'https://via.placeholder.com/50/09090b/00ff80?text=T2'}" alt="${team2.name}">
+                                    <div class="team-name">${team2.code || team2.name}</div>
+                                </div>
+                            </div>
+                            <div class="match-footer">
+                                <span>BO${m.match.game_type || '3'}</span>
+                                <span class="badge ${badgeClass}">${badgeText}</span>
+                            </div>
+                        </div>
+                    `;
                 }).join('');
-                
-                this.contentArea.innerHTML = `<div class="glass-panel"><table><thead><tr><th>Grand Prix</th><th>Venue</th><th>Date</th><th>Time</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+
+                this.contentArea.innerHTML = `<div class="match-grid">${html}</div>`;
             }
 
-            async renderDashboard() {
-                try {
-                    const [standingsData, calendarData] = await Promise.all([
-                        this.fetchAPI(`lookuptable.php?l=${this.leagueId}&s=${this.currentYear}`),
-                        this.fetchAPI(`eventsseason.php?id=${this.leagueId}&s=${this.currentYear}`)
-                    ]);
-
-                    let leaderContent = '<p>No data</p>';
-                    if (standingsData && standingsData.table && standingsData.table.length > 0) {
-                        const topRider = standingsData.table[0];
-                        leaderContent = `
-                            <h3 style="color: var(--text-secondary); font-size: 0.875rem;">CHAMPIONSHIP LEADER</h3>
-                            <h2 style="font-size: 2rem; margin: 0.5rem 0;">${topRider.strTeam}</h2>
-                            <p style="color: var(--accent-red); font-weight: 800; font-size: 1.5rem;">${topRider.intPoints} PTS</p>
-                            <p style="color: var(--text-secondary);">Wins: ${topRider.intWin}</p>
-                        `;
-                    }
-
-                    let nextRaceContent = '<p>Season finished</p>';
-                    if (calendarData && calendarData.events) {
-                        const today = new Date();
-                        const upcomingRaces = calendarData.events.filter(e => new Date(e.dateEvent) > today);
-                        if (upcomingRaces.length > 0) {
-                            const nextRace = upcomingRaces[0];
-                            nextRaceContent = `
-                                <h3 style="color: var(--text-secondary); font-size: 0.875rem;">NEXT RACE</h3>
-                                <h2 style="font-size: 1.5rem; margin: 0.5rem 0;">${nextRace.strEvent}</h2>
-                                <p style="color: var(--text-secondary);">${nextRace.strVenue || 'TBA'}</p>
-                                <p style="color: var(--accent-red); font-weight: 600; margin-top: 0.5rem;">
-                                    ${new Date(nextRace.dateEvent).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-                                </p>
-                            `;
-                        }
-                    }
-
-                    this.contentArea.innerHTML = `
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-                            <div class="glass-panel" style="border-left: 4px solid var(--accent-red);">
-                                ${leaderContent}
-                            </div>
-                            <div class="glass-panel">
-                                ${nextRaceContent}
-                            </div>
-                        </div>`;
-                } catch (e) {
-                    this.contentArea.innerHTML = '<div class="glass-panel"><p>Error loading dashboard.</p></div>';
-                }
+            async renderTournaments() {
+                this.contentArea.innerHTML = `<div class="match-card" style="text-align:center; border-color: var(--accent-val);">
+                    <h2 style="font-family: var(--font-head); font-size: 2rem; color: var(--text-primary);">VCT 2026 SEASON OFFICIALLY ONGOING</h2>
+                    <p style="color: var(--text-secondary);">Check Liquipedia for full tier 2/3 circuit details. API focuses on Tier 1 VCT franchised leagues.</p>
+                </div>`;
             }
 
-            handleSearch(query) {
-                if (!query) { this.loadView(this.currentView); return; }
-                const rows = this.contentArea.querySelectorAll('tbody tr');
-                rows.forEach(row => {
-                    const text = row.textContent.toLowerCase();
-                    row.style.display = text.includes(query.toLowerCase()) ? '' : 'none';
-                });
+            renderDemoBracket() {
+                // Fitur Bracket murni CSS Flexbox, ini cara world-class dev bikin visualisasi tree
+                this.contentArea.innerHTML = `
+                    <h2 style="font-family: var(--font-head); font-size: 2rem; text-align: center; margin-bottom: 2rem; letter-spacing: 1px;">MASTERS <span style="color: var(--accent-neon);">PLAYOFFS</span></h2>
+                    <div class="bracket-container">
+                        <div class="bracket-round">
+                            <div class="bracket-match">
+                                <div class="b-team"><span class="b-winner">PRX</span> <span class="b-score">2</span></div>
+                                <div class="b-team"><span>SEN</span> <span class="b-score">1</span></div>
+                            </div>
+                            <div class="bracket-match">
+                                <div class="b-team"><span class="b-winner">FNC</span> <span class="b-score">2</span></div>
+                                <div class="b-team"><span>GEN.G</span> <span class="b-score">0</span></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bracket-round">
+                            <div class="bracket-match" style="border-color: var(--accent-neon); box-shadow: 0 0 15px rgba(0,255,128,0.2);">
+                                <div style="font-size: 0.7rem; color: var(--accent-neon); text-align: center; margin-bottom: 5px; font-weight: bold;">GRAND FINAL</div>
+                                <div class="b-team"><span class="b-winner">PRX</span> <span class="b-score">3</span></div>
+                                <div class="b-team"><span>FNC</span> <span class="b-score">2</span></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
             }
         }
-        
-        document.addEventListener('DOMContentLoaded', () => new MotoGPApp());
+
+        document.addEventListener('DOMContentLoaded', () => new ValorantHub());
     </script>
 </body>
 </html>
