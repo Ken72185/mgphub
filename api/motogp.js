@@ -1,26 +1,38 @@
 export default async function handler(req, res) {
     const { endpoint } = req.query;
 
-    // Tarik URL utama dari Vercel Environment Variables
-    const API_BASE_URL = process.env.MOTOGP_API_URL;
+    // Ambil URL dan API Key dari Environment Variable Vercel
+    const API_URL = process.env.MOTOGP_API_URL; 
+    const API_KEY = process.env.MOTOGP_API_KEY; 
 
     if (!endpoint) {
-        return res.status(400).json({ error: 'Endpoint parameter is required' });
+        return res.status(400).json({ error: 'Endpoint diperlukan' });
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/${endpoint}`);
-        
+        // OPSI A: Jika API Key dimasukkan via HEADERS (Standard Industri)
+        const response = await fetch(`${API_URL}/${endpoint}`, {
+            headers: {
+                'X-API-KEY': API_KEY, // atau 'Authorization': `Bearer ${API_KEY}` sesuai spek SportDB
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // OPSI B: Jika API Key dimasukkan via URL QUERY PARAMETER (Misal: ?key=xxx)
+        // Hapus Opsi A di atas, lalu pakai yang ini:
+        // const separator = endpoint.includes('?') ? '&' : '?';
+        // const response = await fetch(`${API_URL}/${endpoint}${separator}api_key=${API_KEY}`);
+
         if (!response.ok) {
-            throw new Error(`API returned ${response.status}`);
+            throw new Error(`API Error: ${response.status}`);
         }
 
         const data = await response.json();
         
-        // Kirim datanya balik ke index.html
+        // Kirim data bersih ke index.html (Tanpa ngebocorin API Key-nya)
         res.status(200).json(data);
     } catch (error) {
-        console.error("Vercel Serverless Error:", error);
-        res.status(500).json({ error: 'Failed to fetch data from original API' });
+        console.error(error);
+        res.status(500).json({ error: 'Gagal koneksi ke API utama' });
     }
 }
